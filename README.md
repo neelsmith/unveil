@@ -1,2 +1,3 @@
-# unveiled
-Unified Verification of Editing In Latin
+# unveil
+
+UnVEIL = Unified Verification of Editing In Latin
