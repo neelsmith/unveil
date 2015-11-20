@@ -7,6 +7,7 @@ project.ext {
     // Settings for hocuspocus CTS repository:
     textInventory = ""
     textArchive = ""
+    invSchema = ""
 
 
     // Lists of index files to use in DSE verification:

@@ -44,9 +44,7 @@ import org.apache.tools.ant.filters.*
 apply plugin: "base"
 apply plugin:  "groovy"
 
-
 apply from: "versions.gradle"
-
 
 if (hasProperty('conf')) {
     System.err.println "Using configuration data from ${conf}"
@@ -81,12 +79,8 @@ dependencies {
   compile group: 'org.homermultitext', name : 'citemgr' , version: citemgrVersion
   compile group: 'edu.harvard.chs', name : 'cite' , version: citeVersion
 
-  compile group : 'edu.unc.epidoc', name: 'transcoder', version : transcoderVersion
-
   testCompile 'junit:junit:4.11'
   testCompile 'org.concordion:concordion:1.4.4'
-
-
 }
 
 
@@ -97,13 +91,8 @@ task setUpVisualInventory(type: Copy) {
   filter(ReplaceTokens, tokens: ["imgservice": imgsvc])
 }
 
-
-/* DSE analysis for a physical surface, or a range
- * of physical surfaces, identified by URN value
- * of the project property "folio".
- */
 task dse(dependsOn : [setUpVisualInventory]) {
-  description = "Reports on DSE analysis for a physical surface"
+  description = "Reports on DSE analysis for a physical surface specified by the variable 'folio'"
 }
 dse.doLast {
   System.err.println "Validate folio " + folio
@@ -118,7 +107,6 @@ dse.doLast {
   }
 
   System.err.println "DSE analysis for URN " + urn
-
   def scorecard = []
   def reptDetails = [:]
   Integer totalGood = 0
@@ -155,9 +143,7 @@ dse.doLast {
   if (range.size() == 2) {
     System.err.println "Pages ranges are not currently suppored.  Please validate one page at a time."
 
-
   } else {
-
     System.err.println "Found ${dse.textNodesForSurface(urn).size()} text nodes, breaking down as follows: "
     dse.textTbsIndexFiles.each { f ->
       System.err.println "\tin the index ${f}, " + dse.textNodesForSurface(urn, f).size() + " nodes"
@@ -174,12 +160,10 @@ dse.doLast {
     if (passfail) { totalGood++ }
     def score = [urn,passfail]
     scorecard.add(score)
-
   }
 
 
   def xml = new groovy.xml.StreamingMarkupBuilder().bind {
-
     html {
 	head {
 	  title("DSE validation for ${urn.getCollection()}, pages ${urn.getObjectId()}")
