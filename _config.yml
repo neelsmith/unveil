@@ -1,0 +1,28 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            UnVEIL
+tagline:          'Unified Validation of Editing In Latin'
+description:      'A gradle build system for machine validation of editorial archives'
+baseurl: '/unveil/'
+
+
+author:
+  name:           'Neel Smith'
+
+
+paginate:         5
+
+
+links:
+  - title: Github project
+    url: https://github.com/neelsmith/unveil
+    external: true
+  - title: Neel Smith elsewhere on github
+    url: http://neelsmith.github.io
+    external: true
