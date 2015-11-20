@@ -66,33 +66,6 @@ if (hasProperty('conf')) {
 
 }
 
-/*
-
-if (hasProperty('repoconf')) {
-    System.err.println "Using repository locations data from ${repoconf}"
-    File confFile = new File(repoconf)
-    if (! confFile.exists()) {
-        throw new Exception("No file ${repoconf} found.")
-    }
-    apply from: repoconf
-
-} else {
-    File confFile = new File("repos.gradle")
-    if (! confFile.exists()) {
-        throw new Exception("No configuration file ${confFile} found.")
-    }
-    System.err.println "Using repos.gradle for finding repositories."
-    apply from: "repos.gradle"
-}
-
-if (hasProperty('baserepo')) {
-  println "USE " + baserepo + " for repository base for DSE validation."
-} else {
-  //println "NO base repository configured"
-}
-*/
-
-
 group = "edu.holycross.shot"
 version = '0.1.0'
 
@@ -125,12 +98,6 @@ task setUpVisualInventory(type: Copy) {
 }
 
 
-task echoParams {
-}
-echoParams.doLast {
-  System.err.println "Work with ${folio} and use config ${conf}"
-}
-
 /* DSE analysis for a physical surface, or a range
  * of physical surfaces, identified by URN value
  * of the project property "folio".
@@ -156,15 +123,7 @@ dse.doLast {
   def reptDetails = [:]
   Integer totalGood = 0
 
-
   DseManager dse = new DseManager()
-
-  if (debugDse > 0) {
-    println "DSE configuration:"
-    println "FolioToImage: " + folioToImage
-    println "TextToImage: " + textToImage
-
-  }
 
   folioToImage.split(/,/).each { idx ->
     //String idx = it.replace(/#REPO#/,baserepo)
@@ -174,8 +133,6 @@ dse.doLast {
       dse.tbsImageIndexFiles = [new File(idx)]
     }
   }
-
-
   textToImage.split(/,/).each { idx ->
     //String idx = it.replace(/#REPO#/,baserepo)
     if (dse.textImageIndexFiles) {
@@ -184,10 +141,6 @@ dse.doLast {
       dse.textImageIndexFiles = [new File(idx)]
     }
   }
-
-
-  System.err.println "Files indexing image to text: " + dse.textImageIndexFiles
-
   textToFolio.split(/,/).each { idx ->
     // String idx = it.replace(/#REPO#/,baserepo)
     if (dse.textTbsIndexFiles) {
@@ -196,12 +149,6 @@ dse.doLast {
       dse.textTbsIndexFiles = [new File(idx)]
     }
   }
-
-  System.err.println "Files indexing image to page: " + dse.textTbsIndexFiles
-
-  if (debugDse > 0) {println "Created DSE Manager"}
-
-
 
 
   def range = urn.getObjectId().split(/-/)
@@ -216,12 +163,7 @@ dse.doLast {
       System.err.println "\tin the index ${f}, " + dse.textNodesForSurface(urn, f).size() + " nodes"
     }
     System.err.println "Using default image " + dse.imageForTbs(urn)  + ", found ${dse.textNodesForImage(dse.imageForTbs(urn)).size()} text nodes"
-
-
-
-
     def rept = dse.dseReport(urn)
-
     reptDetails[urn.toString()] = rept
 
     String xml =  dse.getVisualInventoryXml(urn)
